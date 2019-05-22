@@ -14,7 +14,9 @@
   "author": "Lucian Weber <lucian@weber.xyz>",
   "license": "MIT",
   "dependencies": {
+    "activedirectory2": "^1.2.7",
     "body-parser": "1.15.0",
+    "classnames": "^2.2.6",
     "cors": "2.7.1",
     "express": "4.13.4",
     "jwt-simple": "0.5.0",

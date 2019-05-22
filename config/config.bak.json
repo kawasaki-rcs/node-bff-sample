@@ -1,0 +1,15 @@
+{
+	"ldap": {
+		"url": "ldap://192.168.9.8:389",
+		"bindDN": "cn=Administrator,cn=Users,dc=rnc-com,dc=co,dc=jp",
+		"bindCredentials": "ztp3302",
+		"searchBase": "dc=rnc-com,dc=co,dc=jp",
+		"searchFilter": "(sAMAccountName={{username}})",
+		"timeout": 5000,
+		"connectTimeout": 10000,
+		"reconnect": true
+	},
+	"jwt": {
+		"secret": "RCS_AD"
+	}
+}
