@@ -6,3 +6,6 @@ node_modules/
 
 ### Project
 config/config.json
+
+### enviloment
+.env
