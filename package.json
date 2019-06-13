@@ -18,10 +18,14 @@
     "body-parser": "1.15.0",
     "classnames": "^2.2.6",
     "cors": "2.7.1",
+    "dotenv": "^8.0.0",
     "express": "4.13.4",
+    "fs-extra": "^8.0.1",
+    "immutable": "^4.0.0-rc.12",
     "jwt-simple": "0.5.0",
     "ldapauth-fork": "2.5.2",
     "moment": "2.21.0",
-    "promise": "^7.1.1"
+    "promise": "^7.1.1",
+    "puppeteer": "^1.16.0"
   }
 }

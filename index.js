@@ -1,3 +1,8 @@
+require('dotenv').config();
+
+var attend = require('./scraping').attend
+var refreshIdList = require('./scraping').refreshIdList
+
 var settings = require('./config/config.json');
 
 var bodyParser = require('body-parser');
@@ -21,6 +26,9 @@ var auth = new ActiveDirectory(settings.ldap);
 
 app.set('jwtTokenSecret', settings.jwt.secret);
 
+// hogehoge@domain.co.jp みたいなドメインを除く
+var getUsername = u => u.indexOf('@') ? u.split('@')[0] : u
+
 var authenticate = function (username, password) {
     return new Promise(function (resolve, reject) {
         auth.authenticate(username, password, function (err, user) {
@@ -35,24 +43,22 @@ var authenticate = function (username, password) {
 };
 
 app.post('/api/authenticate', function (req, res) {
-    var username = req.body.payload.username;
-	var password = req.body.payload.password;
-	
 	console.log(req.body.payload);
+    let username = req.body.payload.username;
+    let password = req.body.payload.password;
 
     if(username && password) {
         //console.log(req.body)
-        authenticate(username, password)
+        authenticate(`${username}@${process.env.BASE_DN}`, password)
             .then(function(user) {
                 var expires = parseInt(moment().add(2, 'days').format("X"));
                 var token = jwt.encode({
                     exp: expires,
-                    user_name: user.uid,
-                    full_name: user.cn,
-                    mail: user.mail
+                    username: username,
+                    //mail: user.mail
                 }, app.get('jwtTokenSecret'));
 
-                res.json({ payload: {token: token, full_name: user.cn} });
+                res.json({ payload: { token: token, username } });
             })
             .catch(function (err) {
                 // Ldap reconnect config needs to be set to true to reliably
@@ -80,7 +86,8 @@ app.post('/api/authenticate', function (req, res) {
         }
 });
 
-app.post('/verify', function (req, res) {
+app.post('/api/verify', function (req, res) {
+	console.log(req.body.payload);
     var token = req.body.token;
     if (token) {
         try {
@@ -99,6 +106,56 @@ app.post('/verify', function (req, res) {
     }
 });
 
+
+function checkToken (req, res) {
+	var bearerToken = req.headers.authorization;
+    if (bearerToken) {
+        try {
+			var token = bearerToken.split(" ")[1];
+			//console.log(token);
+            var decoded = jwt.decode(token, app.get('jwtTokenSecret'));
+
+            if (decoded.exp <= parseInt(moment().format("X"))) {
+				res.status(400).send({ error: 'Access token has expired'});
+				return false;
+            } else {
+                //res.json(decoded);
+				return decoded;
+            }
+        } catch (err) {
+            res.status(401).send({ error: 'Access token could not be decoded'});
+			return false;
+        }
+    } else {
+        res.status(400).send({ error: 'Access token is missing'});
+		return false;
+    }
+}
+
+app.post('/api/attend', function (req, res) {
+	console.log(req.body.payload);
+	//var token = req.body.token;
+	//console.log(req.headers.authorization);
+	var decoded = checkToken(req, res);
+	if ( decoded ) {
+		//res.json(decoded);
+		//var user = getUsername(decoded.username);
+		var payload = req.body.payload;
+		attend(payload);
+
+	}
+	res.json({ payload: { status: "success" } });
+});
+
+app.post('/api/refresh-id-list', function (req, res) {
+	console.log(req.body.payload);
+	var decoded = checkToken(req, res);
+	if ( decoded ) {
+		var payload = req.body.payload;
+		refreshIdList(payload);
+	}
+	res.json({ payload: { status: "success" } });
+});
 
 var port = (process.env.PORT || 3010);
 app.listen(port, function() {
