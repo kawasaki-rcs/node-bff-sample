@@ -35,6 +35,6 @@ cp .env.default .env
 npm start
 ```
 
-- アプリ等から `http://localhost:3010/authentication` 等のAPIを叩いて試す
+- アプリ等から `http://localhost:3010/api/authentication` 等のAPIを叩いて試す
 
 
