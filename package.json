@@ -1,20 +1,18 @@
 {
-  "name": "ldap-jwt",
-  "version": "1.0.1",
-  "description": "Lightweight node.js based web service that provides user authentication against LDAP server (Active Directory / Windows network) credentials and returns a JSON Web Token.",
+  "name": "exb-dummy-bff",
+  "version": "1.0.0",
+  "description": "Dummy node.js based web service that provides user authentication credentials and returns a JSON Web Token.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "ldap",
     "jwt"
   ],
-  "author": "Lucian Weber <lucian@weber.xyz>",
+  "author": "kawasaki.rcs <kawasaki@c-rcs.jp>",
   "license": "MIT",
   "dependencies": {
-    "activedirectory2": "^1.2.7",
     "body-parser": "1.15.0",
     "classnames": "^2.2.6",
     "cors": "2.7.1",
@@ -22,10 +20,7 @@
     "express": "4.13.4",
     "fs-extra": "^8.0.1",
     "immutable": "^4.0.0-rc.12",
-    "jwt-simple": "0.5.0",
-    "ldapauth-fork": "2.5.2",
     "moment": "2.21.0",
-    "promise": "^7.1.1",
-    "puppeteer": "^1.16.0"
+    "promise": "^7.1.1"
   }
 }

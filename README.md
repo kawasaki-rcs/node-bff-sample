@@ -1,67 +1,40 @@
-# Simple "ldap-jwt" service
-Lightweight node.js based web service that provides user authentication against LDAP server (Active Directory / Windows network) credentials and returns a JSON Web Token.
+## これはなに？
 
-Heavily based on the work of [gregfroese/ldapservice](https://github.com/gregfroese/ldapservice).
+- ありがちなユーザ名／パスワードを受け取ってトークンを返すダミーのバックエンドAPIです
 
+- ユーザ名／パスワードは初期値でどちらも`guest`固定です
 
-## Changes
-
-* Replaced yaml config-files with json
-* Removed support for RabbitMQ
-* Updated npm dependencies
-* Simplified endpoints
+## 使い方
 
 
-## Usage
+- 事前準備： npm、git、テキストエディタ
 
-1. Rename/Copy `config.test.json` to `config.json`
-2. Update config in `config.json`
-3. Deploy
+```bash
+# リポジトリの取得
+git clone https://github.com/kawasaki-rcs/node-bff-sample.git
 
+cd node-bff-sample
 
-## Endpoints
-
-### /authenticate
-
-**Payload**
-
-```json
-{
-    "username": "euler",
-    "password": "password"
-}
+# パッケージのDL
+npm install
 ```
 
-**Response**
+- 環境設定ファイルを設定
+   - `.env.default` を複製して`.env`にリネーム
 
-```json
-{
-  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0NjE3OTQxMjY0NjAsInVzZXJfbmFtZSI6ImV1bGVyIiwiZnVsbF9uYW1lIjoiTGVvbmhhcmQgRXVsZXIiLCJtYWlsIjoiZXVsZXJAbGRhcC5mb3J1bXN5cy5jb20ifQ.bqSjshvLnHsTJwcXBXsNVtGGNatvQHyqhL8MSXuMwFI",
-  "full_name": "Leonhard Euler"
-}
+```bash
+# bash の場合
+cp .env.default .env
 ```
 
-### /verify
 
-**Payload**
+- 実行
 
-```json
-{
-  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0NjE3OTQxMjY0NjAsInVzZXJfbmFtZSI6ImV1bGVyIiwiZnVsbF9uYW1lIjoiTGVvbmhhcmQgRXVsZXIiLCJtYWlsIjoiZXVsZXJAbGRhcC5mb3J1bXN5cy5jb20ifQ.bqSjshvLnHsTJwcXBXsNVtGGNatvQHyqhL8MSXuMwFI"
-}
+```bash
+# ローカル環境での実行
+npm start
 ```
 
-**Response**
+- アプリ等から `http://localhost:3010/authentication` 等のAPIを叩いて試す
 
-```json
-{
-  "exp": 1495058246,
-  "user_name": "euler",
-  "full_name": "Leonhard Euler",
-  "mail": "euler@ldap.forumsys.com"
-}
-```
 
-## ToDo
-
-* Write Tests
