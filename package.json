@@ -17,7 +17,7 @@
     "classnames": "^2.2.6",
     "cors": "2.7.1",
     "dotenv": "^8.0.0",
-    "express": "4.13.4",
+    "express": "4.19.2",
     "fs-extra": "^8.0.1",
     "immutable": "^4.0.0-rc.12",
     "moment": "2.21.0",
